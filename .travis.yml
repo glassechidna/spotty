@@ -1,0 +1,35 @@
+language: go
+
+dist: trusty
+sudo: false
+
+cache:
+  directories:
+    - dl
+    - $HOME/.local
+    - vendor
+
+go:
+  - 1.8.3
+
+install:
+  - ci/setup_env.bash
+  - linux-amd64/glide install
+
+script:
+  - gox -arch="amd64" -os="windows linux"
+
+before_deploy:
+  - upx-3.94-amd64_linux/upx spotty_*
+
+deploy:
+  provider: releases
+  api_key:
+    secure: PgV7Z9lmMAVIDbtpkcn+MXl1I34nWqV2/VmnM1p44MeyaGxPf6sSMOl9VO/yciv8W812WAgH2ElRTjpq4bi8KjbSWJ0eyXDIcsQ3S7WiHW1wXEIaaQL58xxlNtx/x/2z/CC/r14XJUh8E4tyjXM/NInoDykGcLEhbXNgbcpYAKxvyalRv0ek5nWYxVrUMK7NoS0qWa7/19Tt1tl2dgE1uO494vyDSi8XRnHuXstJg3Rs2AL6VMfM+1qucOUdANNeu4ZFbLt8fJxJZTlHxO+wlsjC6p8tGbT9iRh0wGpq6ebFt8ym3ADnhT05nDvHdy0QCzdNtjgFJ3pwbd9qifuQcnP7BNZQGhhHhl/yO1eJrJKRXjAdQpAxVc2x+P3Y3f58z7d/Bskh+MfrggtPUmx+97FOOnMsI1D2yhcXd4k3kwMeFF07mlzuyzqeruMH4XgnjCXwYyuvEQfxKZKkzrRytVcc+C1wBFb5x9tstSk6607UPT1Rv9+NppuYmkEtcFSGJ8fv+uIeQAwcmsk0hsYgmtXck3YoEagiUuZI8cIynfLf0yREkQkDg6RTbBWhlV0D934B6jTj3EYR1Jmp5+6wKabDKAkhbpy/iQ8ciBEFoDR1VPdh6iVyOaYPr86+U2SNTJhifEarZqQgIw6PdDJxBKHglMEJPieSq+lu/2AlRkk=
+  skip_cleanup: true
+  file:
+    - spotty_linux_amd64
+    - spotty_windows_amd64.exe
+  on:
+    tags: true
+    repo: glassechidna/spotty
