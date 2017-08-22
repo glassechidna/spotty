@@ -13,7 +13,7 @@ go:
   - 1.8.3
 
 install:
-  - ci/setup_env.bash
+  - ci/setup_env.sh
   - linux-amd64/glide install
 
 script:
